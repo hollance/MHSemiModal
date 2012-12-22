@@ -2,7 +2,7 @@
 /*
  * This is the view controller for the main screen.
  */
-@interface ViewController : UIViewController
+@interface MainViewController : UIViewController
 
 - (IBAction)showAction:(id)sender;
 

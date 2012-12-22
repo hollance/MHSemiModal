@@ -1,9 +1,9 @@
 
-#import "ViewController.h"
+#import "MainViewController.h"
 #import "SecondViewController.h"
 #import "UIViewController+MHSemiModal.h"
 
-@implementation ViewController
+@implementation MainViewController
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -14,7 +14,6 @@
 {
 	SecondViewController *controller = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
 	[self mh_presentSemiModalViewController:controller animated:YES];
-	[controller release];
 }
 
 @end

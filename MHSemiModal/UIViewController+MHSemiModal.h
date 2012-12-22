@@ -1,7 +1,5 @@
-/*!
- * \file UIViewController+MHSemiModal.h
- *
- * Copyright (c) 2011 Matthijs Hollemans
+/*
+ * Copyright (c) 2011-2012 Matthijs Hollemans
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +20,11 @@
  * THE SOFTWARE.
  */
 
-/*!
+/*
  * Extension to UIViewController that makes it easy to present modal view
  * controllers that only partially cover the screen.
  *
- * Uses the view controller containment APIs on iOS 5. Backwards compatible
- * with iOS 4.x, but the presented view controller won't get any rotation
- * callbacks (its contents will still autorotate, though).
+ * Uses the view controller containment APIs on iOS 5.
  *
  * Based on TDSemiModal by Nathan Reed.
  */

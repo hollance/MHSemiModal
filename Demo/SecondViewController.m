@@ -7,7 +7,6 @@
 - (void)dealloc
 {
 	NSLog(@"dealloc %@", self);
-	[super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -19,12 +18,6 @@
 {
 	[super viewDidAppear:animated];
 	NSLog(@"viewDidAppear");
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	NSLog(@"willRotateToInterfaceOrientation");
 }
 
 - (IBAction)dismissAction

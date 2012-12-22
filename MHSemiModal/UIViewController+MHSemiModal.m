@@ -1,7 +1,5 @@
-/*!
- * \file UIViewController+MHSemiModal.m
- *
- * Copyright (c) 2011 Matthijs Hollemans
+/*
+ * Copyright (c) 2011-2012 Matthijs Hollemans
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,37 +22,30 @@
 
 #import "UIViewController+MHSemiModal.h"
 
-static UIView *coverView = nil;
+static const int CoverViewTag = 88888888;
 
 @implementation UIViewController (MHSemiModal)
 
-- (void)mh_afterPresentAnimation:(UIViewController *)viewController
+- (UIView *)mh_coverViewForViewController:(UIViewController *)viewController
 {
-	viewController.view.frame = self.view.bounds;
-	coverView.alpha = 0.5f;
-
-	if ([viewController respondsToSelector:@selector(didMoveToParentViewController:)])
-		[viewController didMoveToParentViewController:self];
+	return [viewController.parentViewController.view viewWithTag:CoverViewTag];
 }
 
 - (void)mh_presentSemiModalViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-	[viewController retain];
-
-	coverView = [[UIView alloc] initWithFrame:self.view.bounds];
-	coverView.backgroundColor = UIColor.blackColor;
+	UIView *coverView = [[UIView alloc] initWithFrame:self.view.bounds];
+	coverView.backgroundColor = [UIColor blackColor];
 	coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	coverView.alpha = 0.0f;
+	coverView.tag = CoverViewTag;
 	[self.view addSubview:coverView];
-	[coverView release];
 
 	CGRect rect = self.view.bounds;
 	rect.origin.y += rect.size.height;
 	viewController.view.frame = rect;
 	[self.view addSubview:viewController.view];
 
-	if ([viewController respondsToSelector:@selector(didMoveToParentViewController:)])
-		[self addChildViewController:viewController];
+	[self addChildViewController:viewController];
 
 	if (animated)
 	{
@@ -69,28 +60,19 @@ static UIView *coverView = nil;
 	}
 }
 
-- (void)mh_afterDismissAnimation:(UIViewController *)viewController
+- (void)mh_afterPresentAnimation:(UIViewController *)viewController
 {
-	if ([viewController respondsToSelector:@selector(willMoveToParentViewController:)])
-		[viewController removeFromParentViewController];
+	viewController.view.frame = self.view.bounds;
 
-	[coverView removeFromSuperview];
-	coverView = nil;
+	UIView *coverView = [self mh_coverViewForViewController:viewController];
+	coverView.alpha = 0.5f;
 
-	[viewController.view removeFromSuperview];
-	[viewController autorelease];
+	[viewController didMoveToParentViewController:self];
 }
 
 - (void)mh_dismissSemiModalViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-	// Note: The coverView is a static global var for compatibility with iOS 4,
-	// which doesn't have the containment API and therefore the presented view
-	// controller has no pointer back to its parentViewController. If it did,
-	// we could haved simply asked the parent's view for the cover view using
-	// a tag. That is cleaner but unfortunately only works on iOS 5.
-
-	if ([viewController respondsToSelector:@selector(willMoveToParentViewController:)])
-		[viewController willMoveToParentViewController:nil];
+	[viewController willMoveToParentViewController:nil];
 
 	if (animated)
 	{
@@ -99,6 +81,8 @@ static UIView *coverView = nil;
 			CGRect rect = viewController.view.bounds;
 			rect.origin.y += rect.size.height;
 			viewController.view.frame = rect;
+
+			UIView *coverView = [self mh_coverViewForViewController:viewController];
 			coverView.alpha = 0.0f;
 		}
 		completion:^(BOOL finished)
@@ -110,6 +94,15 @@ static UIView *coverView = nil;
 	{
 		[self mh_afterDismissAnimation:viewController];
 	}
+}
+
+- (void)mh_afterDismissAnimation:(UIViewController *)viewController
+{
+	UIView *coverView = [self mh_coverViewForViewController:viewController];
+	[coverView removeFromSuperview];
+
+	[viewController removeFromParentViewController];
+	[viewController.view removeFromSuperview];
 }
 
 @end
