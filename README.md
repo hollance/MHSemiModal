@@ -13,5 +13,3 @@ You now do:
 To dismiss the semi-modal view controller, you do:
 
 `[self mh_dismissSemiModalViewController:controller animated:YES];`
-
-Tested on iOS 4 and iOS 5 (no ARC).
