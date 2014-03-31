@@ -9,15 +9,10 @@
 	NSLog(@"dealloc %@", self);
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	NSLog(@"viewDidAppear");
+	NSLog(@"viewDidAppear %@", self);
 }
 
 - (IBAction)dismissAction

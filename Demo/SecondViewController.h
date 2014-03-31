@@ -4,6 +4,4 @@
  */
 @interface SecondViewController : UIViewController
 
-- (IBAction)dismissAction;
-
 @end

@@ -4,6 +4,4 @@
  */
 @interface MainViewController : UIViewController
 
-- (IBAction)showAction:(id)sender;
-
 @end
